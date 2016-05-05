@@ -1,6 +1,7 @@
 package gocommon
 
 import (
+	"fmt"
 	"log"
 	"regexp"
 	"runtime"
@@ -26,4 +27,10 @@ func CheckedDeferFunc0(f func() error) {
 func MatchPattern(str, pattern string) bool {
 	r := regexp.MustCompile(pattern)
 	return r.MatchString(str)
+}
+
+// GetMySQLConnectionString constructs a connection string based on input.
+func GetMySQLConnectionString(host, port, database, username, password string) string {
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, database)
+	return connectionString
 }

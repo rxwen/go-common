@@ -3,6 +3,7 @@ package gocommon
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"regexp"
 	"runtime"
 )
@@ -33,4 +34,13 @@ func MatchPattern(str, pattern string) bool {
 func GetMySQLConnectionString(host, port, database, username, password string) string {
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, database)
 	return connectionString
+}
+
+// RandomString returns a random string of n length with letters.
+func RandomString(n int, letters string) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }

@@ -1,11 +1,13 @@
 package gocommon
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"math/rand"
 	"regexp"
 	"runtime"
+	"strings"
 )
 
 // GetFileLine is a debug utility that get the file&line of caller.
@@ -43,4 +45,26 @@ func RandomString(n int, letters string) string {
 		b[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(b)
+}
+
+// InitializeDatabase initials the database, make sure database and table exist
+func InitializeDatabase(sqlDriver, connectionString, database, table, sqlCreateTable string) {
+	var sqlCreateDatabase = "create database if not exists " + database
+
+	connectionString = strings.TrimSuffix(connectionString, database)
+	db, _ := sql.Open(sqlDriver, connectionString)
+	_, err := db.Exec(sqlCreateDatabase)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	connectionString += database
+	db, err = sql.Open(sqlDriver, connectionString)
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = db.Exec(sqlCreateTable)
+	if err != nil {
+		panic(err.Error())
+	}
 }

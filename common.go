@@ -48,23 +48,24 @@ func RandomString(n int, letters string) string {
 }
 
 // InitializeDatabase initials the database, make sure database and table exist
-func InitializeDatabase(sqlDriver, connectionString, database, table, sqlCreateTable string) {
+func InitializeDatabase(sqlDriver, connectionString, database, table, sqlCreateTable string) error {
 	var sqlCreateDatabase = "create database if not exists " + database
 
 	connectionString = strings.TrimSuffix(connectionString, database)
 	db, _ := sql.Open(sqlDriver, connectionString)
 	_, err := db.Exec(sqlCreateDatabase)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 
 	connectionString += database
 	db, err = sql.Open(sqlDriver, connectionString)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
 	_, err = db.Exec(sqlCreateTable)
 	if err != nil {
-		panic(err.Error())
+		return err
 	}
+	return nil
 }

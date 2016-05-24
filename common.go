@@ -8,7 +8,12 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+	"time"
 )
+
+func init() {
+	rand.Seed(time.Now().Unix())
+}
 
 // GetFileLine is a debug utility that get the file&line of caller.
 func GetFileLine() (string, int) {

@@ -57,8 +57,11 @@ func InitializeDatabase(sqlDriver, connectionString, database, table, sqlCreateT
 	var sqlCreateDatabase = "create database if not exists " + database
 
 	connectionString = strings.TrimSuffix(connectionString, database)
-	db, _ := sql.Open(sqlDriver, connectionString)
-	_, err := db.Exec(sqlCreateDatabase)
+	db, err := sql.Open(sqlDriver, connectionString)
+	if err != nil {
+		return err
+	}
+	_, err = db.Exec(sqlCreateDatabase)
 	if err != nil {
 		return err
 	}

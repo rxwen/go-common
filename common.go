@@ -11,7 +11,8 @@ import (
 	"time"
 )
 
-func init() {
+// Init function initializes the gocommon package.
+func Init() {
 	rand.Seed(time.Now().Unix())
 }
 

@@ -53,7 +53,7 @@ func RandomString(n int, letters string) string {
 	return string(b)
 }
 
-// InitializeDatabase initials the database, make sure database and table exist
+// InitializeDatabase initials the database, make sure database and table exist.
 func InitializeDatabase(sqlDriver, connectionString, database, table, sqlCreateTable string) error {
 	var sqlCreateDatabase = "create database if not exists " + database
 

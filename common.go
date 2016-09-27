@@ -62,17 +62,19 @@ func InitializeDatabase(sqlDriver, connectionString, database, table, sqlCreateT
 	if err != nil {
 		return err
 	}
+	defer CheckedDeferFunc0(db.Close)
 	_, err = db.Exec(sqlCreateDatabase)
 	if err != nil {
 		return err
 	}
 
 	connectionString += database
-	db, err = sql.Open(sqlDriver, connectionString)
+	db2, err := sql.Open(sqlDriver, connectionString)
 	if err != nil {
 		return err
 	}
-	_, err = db.Exec(sqlCreateTable)
+	defer CheckedDeferFunc0(db2.Close)
+	_, err = db2.Exec(sqlCreateTable)
 	if err != nil {
 		return err
 	}

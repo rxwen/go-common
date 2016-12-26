@@ -5,9 +5,13 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"os"
+	"os/signal"
 	"regexp"
 	"runtime"
+	"runtime/pprof"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -79,4 +83,18 @@ func InitializeDatabase(sqlDriver, connectionString, database, table, sqlCreateT
 		return err
 	}
 	return nil
+}
+
+// EnablePprofOnUsr1Signal allows users to send a USR1 siganel to current process to dump its profilers
+func EnablePprofOnUsr1Signal() {
+	sigChan := make(chan os.Signal)
+	go func() {
+		for _ = range sigChan {
+			pprof.Lookup("goroutine").WriteTo(os.Stderr, 2)
+			pprof.Lookup("heap").WriteTo(os.Stderr, 2)
+			pprof.Lookup("threadcreate").WriteTo(os.Stderr, 2)
+			pprof.Lookup("block").WriteTo(os.Stderr, 2)
+		}
+	}()
+	signal.Notify(sigChan, syscall.SIGUSR1)
 }

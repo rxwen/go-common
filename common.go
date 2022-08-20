@@ -44,7 +44,7 @@ func MatchPattern(str, pattern string) bool {
 
 // GetMySQLConnectionString constructs a connection string based on input.
 func GetMySQLConnectionString(host, port, database, username, password string) string {
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, database)
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", username, password, host, port, database)
 	return connectionString
 }
 
